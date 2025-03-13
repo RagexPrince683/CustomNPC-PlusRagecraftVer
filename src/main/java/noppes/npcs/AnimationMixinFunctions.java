@@ -52,7 +52,7 @@ public class AnimationMixinFunctions {
             return false;
         }
 
-        if (ClientEventHandler.renderingPlayer != null) {
+        if (!DBCAddon.IsAvailable() && ClientEventHandler.renderingPlayer != null) {
             ClientEventHandler.playerModel = (modelRenderer).baseModel;
             if (ClientCacheHandler.playerAnimations.containsKey(ClientEventHandler.renderingPlayer.getUniqueID())) {
                 AnimationData animData = ClientCacheHandler.playerAnimations.get(ClientEventHandler.renderingPlayer.getUniqueID());
@@ -221,6 +221,10 @@ public class AnimationMixinFunctions {
     }
 
     public static boolean mixin_renderFirstPersonAnimation(float partialRenderTick, EntityPlayer player, ModelBiped model, RenderBlocks renderBlocksIr, ResourceLocation resItemGlint) {
+        if (!DBCAddon.IsAvailable()) {
+            return false;
+        }
+
         AnimationData animationData = ClientCacheHandler.playerAnimations.get(player.getUniqueID());
         if (animationData != null && animationData.isActive()) {
             Frame frame = (Frame) animationData.animation.currentFrame();
